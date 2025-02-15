@@ -138,7 +138,8 @@ function updateVelocity(p,dt)
 end
 
 function updatePosition(p,dt)
-	p.x = (p.x + p.vx * dt) % 1024
-	p.y = (p.y + p.vy * dt) % 768
+	local winWidth, winHeight = love.window.getMode()
+	p.x = (p.x + p.vx * dt) % winWidth
+	p.y = (p.y + p.vy * dt) % winHeight
 end
 
