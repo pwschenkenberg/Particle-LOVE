@@ -1,3 +1,5 @@
+require("particles")
+
 -- returns list of particle objects
 function createParticles(qty, radius)
 
@@ -17,7 +19,7 @@ function createParticles(qty, radius)
 		particle.velocityX = 0
 		particle.velocityY = 0
 
-		particle.color = randomParticleColor()
+		particle.color = randomColor()
 
 		table.insert(list_of_particles, particle)
 	end
@@ -41,15 +43,7 @@ function placeParticles(pList)
 	end
 end
 
--- returns {r,g,b} value
-function randomParticleColor()
-	local r = math.random(0,1)
-	if r == 0 then
-		return {0,1,1} --cyan
-	else
-		return {1,0,0} --red
-	end
-end
+
 
 -- returns distance in pixels between two particle objects
 function distanceFromParticle(p1,p2)
