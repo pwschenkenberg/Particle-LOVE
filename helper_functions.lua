@@ -26,7 +26,7 @@ function createParticles(qty, radius)
 		particle.vmax = 300
 
 		particle.mass = 2
-		particle.drag = .7
+		particle.drag = .8
 
 		particle.color = randomColor()
 
@@ -40,7 +40,7 @@ end
 -- particle radius and window width, does not account for window height
 function placeParticles()
 	local winWidth, winHeight = love.window.getMode()
-	local initX = 150
+	local initX = 200
 	local initY = 150
 	
 	for i,v in ipairs(pList) do
@@ -86,10 +86,28 @@ function updateAcceleration(p)
 		end
 	end
 
-	local x, y = getCenter(p.color)
-	local angle2 = math.atan2(y - p.y, x - p.x)
-	p.ax = p.ax + math.cos(angle2)
-	p.ay = p.ay + math.sin(angle2)
+	--local x, y = getCenter(p.color)
+	--local angle2 = math.atan2(y - p.y, x - p.x)
+	--p.ax = p.ax + math.cos(angle2)
+	--p.ay = p.ay + math.sin(angle2)
+	if love.mouse.isDown(1) then
+		local mousex, mousey = love.mouse.getPosition()
+		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
+			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
+			p.ax = p.ax - math.cos(mouseAngle) * 75
+			p.ay = p.ay - math.sin(mouseAngle) * 75
+		end
+	end
+
+	if love.mouse.isDown(2) then
+		local mousex, mousey = love.mouse.getPosition()
+		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
+			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
+			p.ax = p.ax + math.cos(mouseAngle) * 75
+			p.ay = p.ay + math.sin(mouseAngle) * 75
+		end
+	end
+	
 end
 
 function outOfBounds(p)
@@ -123,3 +141,4 @@ function updatePosition(p,dt)
 	p.x = p.x + p.vx * dt 
 	p.y = p.y + p.vy * dt 
 end
+
