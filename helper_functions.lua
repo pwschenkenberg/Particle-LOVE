@@ -110,29 +110,12 @@ function updateAcceleration(p)
 	
 end
 
-function outOfBounds(p)
-	local xin = 1
-	local yin = 1
-	-- local winWidth, winHeight = love.window.getMode()
-
-	-- if p.x < 0 or p.x > winWidth then
-	-- 	xin = -1
-	-- end
-
-	-- if p.y < 0 or p.y > winHeight then
-	-- 	yin = -1
-	-- end
-
-	return xin, yin
-end
-
 function updateVelocity(p,dt)
 
-	local xmult, ymult = outOfBounds(p)
 	local angle = math.atan2(p.vy,p.vx)
 
-	p.vx = (p.vx + p.ax) * xmult * p.drag
-	p.vy = (p.vy + p.ay) * ymult * p.drag
+	p.vx = (p.vx + p.ax) * p.drag
+	p.vy = (p.vy + p.ay) * p.drag
 
 	
 end
