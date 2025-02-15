@@ -23,7 +23,7 @@ end
 function love.draw()
     for i, v in ipairs(pList) do
         love.graphics.setColor(v.color)
-        love.graphics.circle("fill",v.x,v.y,v.r)
+        love.graphics.circle("line",v.x,v.y,v.r)
     end
 end
 

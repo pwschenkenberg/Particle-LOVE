@@ -2,7 +2,7 @@
 local colorTable = {
 	red 	= {1,0,0},
 	green 	= {0,1,0},
-	blue 	= {0,0,1},
+	blue 	= {0,1,1},
 	--yellow 	= {1,1,0},
 	--purple 	= {1,0,1},
 	--cyan 	= {0,1,1},
@@ -35,21 +35,21 @@ end
 function seekOrAvoid(p,pTarget)
 	if p.color == colorTable.red then
 		if pTarget.color == colorTable.green then
-			return 2
+			return 4
 		else
-			return -1
+			return -5
 		end
 	elseif p.color == colorTable.green then
 		if pTarget.color == colorTable.blue then
-			return 1
+			return 4
 		else
-			return -1
+			return -5
 		end
 	elseif p.color == colorTable.blue then
 		if pTarget.color == colorTable.red then
-			return 2
+			return 8
 		else
-			return -2
+			return -3
 		end
 	else
 		return 0

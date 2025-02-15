@@ -10,7 +10,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 200 --range of influence
+		particle.range = 500 --range of influence
 
 		--position
 		particle.x = 0
@@ -23,10 +23,10 @@ function createParticles(qty, radius)
 		--velocity
 		particle.vx = 0
 		particle.vy = 0
-		particle.vmax = 200
+		particle.vmax = 300
 
 		particle.mass = 2
-		particle.drag = .95
+		particle.drag = .7
 
 		particle.color = randomColor()
 
@@ -61,9 +61,11 @@ end
 
 -- takes a distance and converts it into a force multiplier from 0 to 1
 function forceMultipler(distance,range)
-	--linear from 1 to 0, scaled by range
+	-- linear from 1 to 0, scaled by range
 	-- TODO: add a smoothing function over the range
-	return math.max(1 - distance/range, 0)
+	local x = distance/range
+
+	return -math.sin(5*x-1.6)
 end
 
 function updateAcceleration(p)
