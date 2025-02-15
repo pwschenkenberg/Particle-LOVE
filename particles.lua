@@ -31,3 +31,27 @@ function randomColor()
 	local color = colorKeys[math.random(#colorKeys)]
 	return getRGB(color)
 end
+
+function seekOrAvoid(p,pTarget)
+	if p.color == colorTable.red then
+		if pTarget.color == colorTable.green then
+			return 1
+		else
+			return -1
+		end
+	elseif p.color == colorTable.green then
+		if pTarget.color == colorTable.blue then
+			return 1
+		else
+			return -1
+		end
+	elseif p.color == colorTable.blue then
+		if pTarget.color == colorTable.red then
+			return 1
+		else
+			return -1
+		end
+	else
+		return 0
+	end
+end

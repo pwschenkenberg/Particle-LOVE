@@ -2,7 +2,7 @@ require("helper_functions")
 
 function love.load()
     -- pList is a global list holding all the particles
-    pList = createParticles(4000,3)
+    pList = createParticles(500,3)
     placeParticles()
 end
 
@@ -12,12 +12,10 @@ function love.update(dt)
         updateAcceleration(v)
     end
 
-    --other accel updates as needed
-
-    --new loop
-    --use accel values to update velocity
-
-    --use velocity values to update position
+    for i,v in ipairs(pList) do
+        updateVelocity(v,dt)
+        updatePosition(v,dt)
+    end
 
 
 end
