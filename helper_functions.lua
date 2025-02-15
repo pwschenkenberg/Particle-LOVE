@@ -1,5 +1,7 @@
 require("particles")
 
+math.randomseed(os.time())
+
 -- returns list of particle objects
 function createParticles(qty, radius)
 
@@ -86,10 +88,8 @@ function updateAcceleration(p)
 		end
 	end
 
-	--local x, y = getCenter(p.color)
-	--local angle2 = math.atan2(y - p.y, x - p.x)
-	--p.ax = p.ax + math.cos(angle2)
-	--p.ay = p.ay + math.sin(angle2)
+	pushToCenter(p)
+
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then

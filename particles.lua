@@ -63,7 +63,12 @@ function getParticleInteraction(p,pTarget)
 	return particleInteractions[p][pTarget]
 end
 
-function getCenter(color)
+function pushToCenter(p)
 	local winWidth, winHeight = love.window.getMode()
-	return winWidth/2, winHeight/2
+	local angle = math.atan2(winHeight/2 - p.y, winWidth/2 - p.x)
+
+	if p.x < 10 or math.abs(winWidth-p.x) < 10 or p.y < 10 or math.abs(winHeight-p.y) < 10 then
+		p.ax = p.ax + math.cos(angle)*20
+		p.ay = p.ay + math.sin(angle)*20
+	end
 end
