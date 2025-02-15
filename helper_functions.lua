@@ -95,15 +95,15 @@ end
 function outOfBounds(p)
 	local xin = 1
 	local yin = 1
-	local winWidth, winHeight = love.window.getMode()
+	-- local winWidth, winHeight = love.window.getMode()
 
-	if p.x < 0 or p.x > winWidth then
-		xin = -1
-	end
+	-- if p.x < 0 or p.x > winWidth then
+	-- 	xin = -1
+	-- end
 
-	if p.y < 0 or p.y > winHeight then
-		yin = -1
-	end
+	-- if p.y < 0 or p.y > winHeight then
+	-- 	yin = -1
+	-- end
 
 	return xin, yin
 end
@@ -120,6 +120,6 @@ function updateVelocity(p,dt)
 end
 
 function updatePosition(p,dt)
-	p.x = p.x + p.vx * dt 
-	p.y = p.y + p.vy * dt 
+	p.x = (p.x + p.vx * dt) % 1024
+	p.y = (p.y + p.vy * dt) % 768
 end
