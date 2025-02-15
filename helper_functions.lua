@@ -10,14 +10,20 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
+		particle.range = 300 --range of influence
+
+		--position
 		particle.x = 0
 		particle.y = 0
 
-		--keep x and y separate for ease of math and drawing
-		particle.accelx = 0
-		particle.accely = 0
-		particle.velocityX = 0
-		particle.velocityY = 0
+		--acceleration
+		particle.ax = 0
+		particle.ay = 0
+
+		--velocity
+		particle.vx = 0
+		particle.vy = 0
+		particle.vMax = 500
 
 		particle.color = randomColor()
 
@@ -29,7 +35,7 @@ end
 
 -- takes list of particles and draws them in a rectangle based on 
 -- particle radius and window width, does not account for window height
-function placeParticles(pList)
+function placeParticles()
 	local winWidth, winHeight = love.window.getMode()
 	local initX = 50
 	local initY = 50
@@ -44,9 +50,8 @@ function placeParticles(pList)
 end
 
 
-
 -- returns distance in pixels between two particle objects
-function distanceFromParticle(p1,p2)
+function pDistance(p1,p2)
 	local distance = math.sqrt((p2.x-p1.x)^2 + (p2.y-p1.y)^2)
 	return distance
 end
@@ -56,4 +61,10 @@ function forceMultipler(distance,range)
 	--linear from 1 to 0, scaled by range
 	-- TODO: add a smoothing function over the range
 	return math.max(1 - distance/range, 0)
+end
+
+function updateAcceleration(p)
+	for i,v in ipairs(pList) do
+				
+	end
 end
