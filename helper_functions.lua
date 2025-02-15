@@ -10,7 +10,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 100 --range of influence
+		particle.range = 200 --range of influence
 
 		--position
 		particle.x = 0
@@ -25,8 +25,8 @@ function createParticles(qty, radius)
 		particle.vy = 0
 		particle.vmax = 200
 
-		particle.mass = 10
-		particle.drag = 0.9
+		particle.mass = 2
+		particle.drag = .95
 
 		particle.color = randomColor()
 
@@ -40,15 +40,15 @@ end
 -- particle radius and window width, does not account for window height
 function placeParticles()
 	local winWidth, winHeight = love.window.getMode()
-	local initX = 50
-	local initY = 50
+	local initX = 150
+	local initY = 150
 	
 	for i,v in ipairs(pList) do
 		local spacing = v.r * 6
 		local rowLength = (winWidth - initX*2)/spacing
 
 		v.x = initX + (i-1) % rowLength * spacing
-		v.y = initY + math.floor((i-1)/rowLength) * spacing
+		v.y = initY + math.floor((i-1)/rowLength) * spacing +math.random(-10,10)
 	end
 end
 
@@ -79,11 +79,15 @@ function updateAcceleration(p)
 				local force = forceMultipler(distance,p.range)
 
 				p.ax = p.ax + math.cos(angle) * dir * force / p.mass
-				p.ay = p.ax + math.sin(angle) * dir * force / p.mass
+				p.ay = p.ay + math.sin(angle) * dir * force / p.mass
 			end
 		end
-
 	end
+
+	local x, y = getCenter(p.color)
+	local angle2 = math.atan2(y - p.y, x - p.x)
+	p.ax = p.ax + math.cos(angle2)
+	p.ay = p.ay + math.sin(angle2)
 end
 
 function outOfBounds(p)
@@ -95,7 +99,7 @@ function outOfBounds(p)
 		xin = -1
 	end
 
-	if p.y < 0 or p.y < winHeight then
+	if p.y < 0 or p.y > winHeight then
 		yin = -1
 	end
 
@@ -107,8 +111,8 @@ function updateVelocity(p,dt)
 	local xmult, ymult = outOfBounds(p)
 	local angle = math.atan2(p.vy,p.vx)
 
-	p.vx = (p.vx + p.ax) * xmult
-	p.vy = (p.vy + p.ay) * ymult
+	p.vx = (p.vx + p.ax) * xmult * p.drag
+	p.vy = (p.vy + p.ay) * ymult * p.drag
 
 	
 end

@@ -35,7 +35,7 @@ end
 function seekOrAvoid(p,pTarget)
 	if p.color == colorTable.red then
 		if pTarget.color == colorTable.green then
-			return 1
+			return 2
 		else
 			return -1
 		end
@@ -47,11 +47,16 @@ function seekOrAvoid(p,pTarget)
 		end
 	elseif p.color == colorTable.blue then
 		if pTarget.color == colorTable.red then
-			return 1
+			return 2
 		else
-			return -1
+			return -2
 		end
 	else
 		return 0
 	end
+end
+
+function getCenter(color)
+	local winWidth, winHeight = love.window.getMode()
+	return winWidth/2, winHeight/2
 end
