@@ -1,9 +1,9 @@
 -- store color RGB values
 local colorTable = {
-	red 	= {1,0,0},
-	green 	= {0,1,0},
-	blue 	= {0,1,1},
-	--yellow 	= {1,1,0},
+	red 	= {.8,0,0},
+	green 	= {0,.8,0},
+	blue 	= {.2,.4,1},
+	yellow 	= {.8,.8,0},
 	--purple 	= {1,0,1},
 	--cyan 	= {0,1,1},
 	--white	= {1,1,1},
@@ -35,19 +35,28 @@ end
 local particleInteractions = {
 	-- positive = attraction
     [colorTable.red] = { 
-   		[colorTable.red] 	= -1, 
+   		[colorTable.red] 	= -1, --self
 		[colorTable.green] 	= 1, 
-		[colorTable.blue] 	= -2 },
+		[colorTable.blue] 	= -1, 
+		[colorTable.yellow]	= 1 },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= 5, 
-    	[colorTable.green] 	= -10, 
-    	[colorTable.blue] 	= 1 },
+    	[colorTable.red] 	= -1, 
+    	[colorTable.green] 	= -1, --self
+    	[colorTable.blue] 	= 1, 
+    	[colorTable.yellow]	= -1 },
 
     [colorTable.blue] = { 
-    	[colorTable.red] 	= 2, 
+    	[colorTable.red] 	= 1, 
     	[colorTable.green] 	= -1, 
-    	[colorTable.blue] 	= -1 },
+    	[colorTable.blue] 	= -1,--self
+    	[colorTable.yellow]	= 1 },
+
+    [colorTable.yellow] = { 
+    	[colorTable.red] 	= 1, 
+    	[colorTable.green] 	= 1, 
+    	[colorTable.blue] 	= -1,
+    	[colorTable.yellow]	= -1 }--self
 }
 
 function getParticleInteraction(p,pTarget)
