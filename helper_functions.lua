@@ -26,7 +26,7 @@ function createParticles(qty, radius)
 		particle.vmax = 300
 
 		particle.mass = 2
-		particle.drag = .8
+		particle.drag = .9
 
 		particle.color = randomColor()
 

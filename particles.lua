@@ -34,9 +34,20 @@ end
 
 local particleInteractions = {
 	-- positive = attraction
-    [colorTable.red] = { [colorTable.red] = -1, [colorTable.green] = 1, [colorTable.blue] = -2 },
-    [colorTable.green] = { [colorTable.red] = -1, [colorTable.green] = -1, [colorTable.blue] = 1 },
-    [colorTable.blue] = { [colorTable.red] = 2, [colorTable.green] = -1, [colorTable.blue] = -1 },
+    [colorTable.red] = { 
+   		[colorTable.red] 	= -1, 
+		[colorTable.green] 	= 1, 
+		[colorTable.blue] 	= -2 },
+
+    [colorTable.green] = { 
+    	[colorTable.red] 	= 5, 
+    	[colorTable.green] 	= -10, 
+    	[colorTable.blue] 	= 1 },
+
+    [colorTable.blue] = { 
+    	[colorTable.red] 	= 2, 
+    	[colorTable.green] 	= -1, 
+    	[colorTable.blue] 	= -1 },
 }
 
 function getParticleInteraction(p,pTarget)
