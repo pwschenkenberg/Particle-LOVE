@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 500 --range of influence
+		particle.range = 400 --range of influence
 
 		--position
 		particle.x = 0
@@ -23,8 +23,8 @@ function createParticles(qty, radius)
 		particle.ay = 0
 
 		--velocity
-		particle.vx = 0
-		particle.vy = 0
+		particle.vx = math.random(-10,10)
+		particle.vy = math.random(-10,10)
 		particle.vmax = 300
 
 		particle.mass = 2
@@ -88,7 +88,8 @@ function updateAcceleration(p)
 		end
 	end
 
-	pushToCenter(p)
+	--gravity
+	p.ay = p.ay + 10
 
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
@@ -111,18 +112,21 @@ function updateAcceleration(p)
 end
 
 function updateVelocity(p,dt)
-
+	local winWidth, winHeight = love.window.getMode()
 	local angle = math.atan2(p.vy,p.vx)
 
 	p.vx = (p.vx + p.ax) * p.drag
 	p.vy = (p.vy + p.ay) * p.drag
 
+	if p.y >= (winHeight - p.r) then
+		p.vy = -p.vy
+	end
 	
 end
 
 function updatePosition(p,dt)
 	local winWidth, winHeight = love.window.getMode()
 	p.x = (p.x + p.vx * dt) % winWidth
-	p.y = (p.y + p.vy * dt) % winHeight
+	p.y = math.min(p.y + p.vy * dt,winHeight-p.r) --% winHeight
 end
 

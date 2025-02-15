@@ -37,38 +37,28 @@ local particleInteractions = {
     [colorTable.red] = { 
    		[colorTable.red] 	= -1, --self
 		[colorTable.green] 	= 1, 
-		[colorTable.blue] 	= -1, 
-		[colorTable.yellow]	= 1 },
+		[colorTable.blue] 	= -3, 
+		[colorTable.yellow]	= 4 },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= -1, 
+    	[colorTable.red] 	= 4, 
     	[colorTable.green] 	= -1, --self
     	[colorTable.blue] 	= 1, 
-    	[colorTable.yellow]	= -1 },
+    	[colorTable.yellow]	= -10 },
 
     [colorTable.blue] = { 
-    	[colorTable.red] 	= 1, 
-    	[colorTable.green] 	= -1, 
+    	[colorTable.red] 	= 4, 
+    	[colorTable.green] 	= 1, 
     	[colorTable.blue] 	= -1,--self
-    	[colorTable.yellow]	= 1 },
+    	[colorTable.yellow]	= -1 },
 
     [colorTable.yellow] = { 
-    	[colorTable.red] 	= 1, 
-    	[colorTable.green] 	= 1, 
+    	[colorTable.red] 	= -1, 
+    	[colorTable.green] 	= 5, 
     	[colorTable.blue] 	= -1,
-    	[colorTable.yellow]	= -1 }--self
+    	[colorTable.yellow]	= -.5 }--self
 }
 
 function getParticleInteraction(p,pTarget)
 	return particleInteractions[p][pTarget]
-end
-
-function pushToCenter(p)
-	local winWidth, winHeight = love.window.getMode()
-	local angle = math.atan2(winHeight/2 - p.y, winWidth/2 - p.x)
-
-	if p.x < 10 or math.abs(winWidth-p.x) < 10 or p.y < 10 or math.abs(winHeight-p.y) < 10 then
-		p.ax = p.ax + math.cos(angle)*20
-		p.ay = p.ay + math.sin(angle)*20
-	end
 end
