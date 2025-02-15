@@ -32,28 +32,15 @@ function randomColor()
 	return getRGB(color)
 end
 
-function seekOrAvoid(p,pTarget)
-	if p.color == colorTable.red then
-		if pTarget.color == colorTable.green then
-			return 4
-		else
-			return -5
-		end
-	elseif p.color == colorTable.green then
-		if pTarget.color == colorTable.blue then
-			return 4
-		else
-			return -5
-		end
-	elseif p.color == colorTable.blue then
-		if pTarget.color == colorTable.red then
-			return 8
-		else
-			return -3
-		end
-	else
-		return 0
-	end
+local particleInteractions = {
+	-- positive = attraction
+    [colorTable.red] = { [colorTable.red] = -3, [colorTable.green] = 4, [colorTable.blue] = -7 },
+    [colorTable.green] = { [colorTable.red] = -7, [colorTable.green] = -3, [colorTable.blue] = 8 },
+    [colorTable.blue] = { [colorTable.red] = 5, [colorTable.green] = -3, [colorTable.blue] = -3 },
+}
+
+function getParticleInteraction(p,pTarget)
+	return particleInteractions[p][pTarget]
 end
 
 function getCenter(color)

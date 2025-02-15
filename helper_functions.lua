@@ -76,7 +76,7 @@ function updateAcceleration(p)
 		if v == p then else
 			local distance = pDistance(p,v)
 			if distance < p.range then
-				local dir = seekOrAvoid(p,v)
+				local dir = getParticleInteraction(p.color, v.color)
 				local angle = math.atan2(v.y - p.y, v.x - p.x)
 				local force = forceMultipler(distance,p.range)
 
