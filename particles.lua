@@ -36,9 +36,9 @@ local particleInteractions = {
 	-- positive = attraction
     [colorTable.red] = { 
 		[colorTable.red] 	= {-1,1}, --self
-		[colorTable.green] 	= {1,2}, 
+		[colorTable.green] 	= {3,3}, 
 		[colorTable.blue] 	= {1,2}, 
-		[colorTable.yellow]	= {1,2} },
+		[colorTable.yellow]	= {1,3} },
 
     [colorTable.green] = { 
     	[colorTable.red] 	= {-1,3}, 

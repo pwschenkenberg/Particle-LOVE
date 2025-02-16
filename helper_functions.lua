@@ -34,12 +34,12 @@ function createParticles(qty, radius)
 
 		if particle.color == getRGB("red") then
 			particle.mass = 10
-			particle.range = 600
+			--particle.range = 400
 			particle.drag = .98
 		elseif particle.color == getRGB("green") then
 			particle.mass = 1
-			particle.drag = .9
-			particle.range = 400
+			particle.drag = .8
+			--particle.range = 300
 		end
 
 		-- for wraparound logic
@@ -196,8 +196,7 @@ function updatePosition(p,dt)
 	end
 
 	if p.y > winHeight/2 then
-		p.wrapYvert = p.y - winWidth
+		p.wrapYvert = p.y - winHeight
 		p.wrapYcorn = p.wrapYhor
 	end
 end
-
