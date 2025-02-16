@@ -1,4 +1,5 @@
 require("particles")
+require("tiling")
 
 math.randomseed(os.time())
 
@@ -145,6 +146,9 @@ function updateAcceleration(p)
 
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
+		mousex = mousex - transX
+		mousey = mousey - transY
+		
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
 			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
 			p.ax = p.ax - math.cos(mouseAngle) * 75
