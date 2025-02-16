@@ -1,6 +1,7 @@
 require("helper_functions")
 
 function love.load()
+    winWidth, winHeight = love.window.getMode()
     -- pList is a global list holding all the particles
     pList = createParticles(400,1)
     placeParticles()

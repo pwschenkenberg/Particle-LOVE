@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 200 --range of influence
+		particle.range = 240 --range of influence
 
 		--position
 		particle.x = 0
@@ -29,16 +29,16 @@ function createParticles(qty, radius)
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 2
-		particle.drag = .95
+		particle.mass = 3
+		particle.drag = .92
 
 		if particle.color == getRGB("red") then
-			particle.mass = 10
+			--particle.mass = 10
 			--particle.range = 400
-			particle.drag = .98
+			--particle.drag = .98
 		elseif particle.color == getRGB("green") then
-			particle.mass = 1
-			particle.drag = .9
+			--particle.mass = 1
+			--particle.drag = .9
 			--particle.range = 300
 		end
 
@@ -61,7 +61,6 @@ end
 -- takes list of particles and draws them in a rectangle based on 
 -- particle radius and window width, does not account for window height
 function placeParticles()
-	local winWidth, winHeight = love.window.getMode()
 	local initX = 550
 	local initY = 200
 	
@@ -115,8 +114,6 @@ function updateAcceleration(p)
 	p.ax = 0
 	p.ay = 0
 
-	local winWidth, winHeight = love.window.getMode()
-
 	for i,v in ipairs(pList) do
 		if v == p then else
 			local distance = pDistance(p,v)
@@ -166,7 +163,6 @@ function updateAcceleration(p)
 end
 
 function updateVelocity(p,dt)
-	local winWidth, winHeight = love.window.getMode()
 	local angle = math.atan2(p.vy,p.vx)
 
 	p.vx = (p.vx + p.ax) * p.drag
@@ -178,7 +174,6 @@ function updateVelocity(p,dt)
 end
 
 function updatePosition(p,dt)
-	local winWidth, winHeight = love.window.getMode()
 	p.x = (p.x + p.vx * dt) % winWidth
 	--p.y = math.min(p.y + p.vy * dt,winHeight-p.r)
 	p.y = (p.y + p.vy * dt) % winHeight
