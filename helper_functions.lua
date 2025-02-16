@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 300 --range of influence
+		particle.range = 150 --range of influence
 
 		--position
 		particle.x = 0
@@ -25,12 +25,24 @@ function createParticles(qty, radius)
 		--velocity
 		particle.vx = math.random(-10,10)
 		particle.vy = math.random(-10,10)
-		particle.vmax = 300
-
-		particle.mass = 2
-		particle.drag = .95
-
+		particle.vmax = 200
+		
 		particle.color = randomColor(4)
+		
+		particle.mass = 2
+		particle.drag = .955
+
+		if particle.color == getRGB("red") then
+			particle.mass = 10
+			particle.range = 600
+			particle.drag = .98
+		elseif particle.color == getRGB("green") then
+			particle.mass = 1
+			particle.drag = .9
+			particle.range = 400
+		end
+
+
 
 		table.insert(list_of_particles, particle)
 	end
@@ -42,11 +54,11 @@ end
 -- particle radius and window width, does not account for window height
 function placeParticles()
 	local winWidth, winHeight = love.window.getMode()
-	local initX = 200
-	local initY = 150
+	local initX = 550
+	local initY = 200
 	
 	for i,v in ipairs(pList) do
-		local spacing = v.r * 6
+		local spacing = v.r * 16
 		local rowLength = (winWidth - initX*2)/spacing
 
 		v.x = initX + (i-1) % rowLength * spacing
