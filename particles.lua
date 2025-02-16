@@ -1,9 +1,9 @@
 -- store color RGB values
 local colorTable = {
-	red 	= {1,0,0},
-	green 	= {0,1,0},
-	blue 	= {0,1,1},
-	--yellow 	= {1,1,0},
+	red 	= {.8,0,0},
+	green 	= {0,.8,0},
+	blue 	= {.2,.4,1},
+	yellow 	= {.8,.8,0},
 	--purple 	= {1,0,1},
 	--cyan 	= {0,1,1},
 	--white	= {1,1,1},
@@ -27,34 +27,55 @@ function getRGB(color)
 end
 
 -- returns random {r,g,b} value from colorTable
-function randomColor()
-	local color = colorKeys[math.random(#colorKeys)]
+function randomColor(num)
+	local color = colorKeys[math.random(math.min(#colorKeys,num))]
 	return getRGB(color)
 end
 
 local particleInteractions = {
 	-- positive = attraction
     [colorTable.red] = { 
-   		[colorTable.red] 	= -1, 
-		[colorTable.green] 	= 1, 
-		[colorTable.blue] 	= -2 },
+		[colorTable.red] 	= {-1,1}, --self
+		[colorTable.green] 	= {1,2}, 
+		[colorTable.blue] 	= {1,2}, 
+		[colorTable.yellow]	= {1,2} },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= 5, 
-    	[colorTable.green] 	= -10, 
-    	[colorTable.blue] 	= 1 },
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {-1,1}, --self
+    	[colorTable.blue] 	= {-1,2}, 
+    	[colorTable.yellow]	= {-1,2} },
 
     [colorTable.blue] = { 
-    	[colorTable.red] 	= 2, 
-    	[colorTable.green] 	= -1, 
-    	[colorTable.blue] 	= -1 },
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {1,2}, 
+    	[colorTable.blue] 	= {-1,1},--self
+    	[colorTable.yellow]	= {-1,2} },
+
+    [colorTable.yellow] = { 
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {1,2}, 
+    	[colorTable.blue] 	= {1,2},
+    	[colorTable.yellow]	= {-1,1} }--self
 }
 
-function getParticleInteraction(p,pTarget)
-	return particleInteractions[p][pTarget]
+function forceEquation(i,distance,range)
+	local x = distance/range
+	if i == 1 then
+		-- eq 1
+		return math.sin((1.6 * (x^1 - 1))^3) * 2
+	elseif i == 2 then
+		-- eq 2
+		--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
+		return 1-x
+	else
+		return 0
+	end
+
 end
 
-function getCenter(color)
-	local winWidth, winHeight = love.window.getMode()
-	return winWidth/2, winHeight/2
+function getParticleInteraction(p,pTarget,distance,range)
+	local pInt = particleInteractions[p][pTarget][1]
+	local eq = particleInteractions[p][pTarget][2]
+	return pInt,forceEquation(eq,distance,range)
 end
