@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 150 --range of influence
+		particle.range = 200 --range of influence
 
 		--position
 		particle.x = 0
@@ -30,7 +30,7 @@ function createParticles(qty, radius)
 		particle.color = randomColor(4)
 		
 		particle.mass = 2
-		particle.drag = .955
+		particle.drag = .95
 
 		if particle.color == getRGB("red") then
 			particle.mass = 10
@@ -38,7 +38,7 @@ function createParticles(qty, radius)
 			particle.drag = .98
 		elseif particle.color == getRGB("green") then
 			particle.mass = 1
-			particle.drag = .8
+			particle.drag = .9
 			--particle.range = 300
 		end
 
@@ -197,6 +197,6 @@ function updatePosition(p,dt)
 
 	if p.y > winHeight/2 then
 		p.wrapYvert = p.y - winHeight
-		p.wrapYcorn = p.wrapYhor
+		p.wrapYcorn = p.wrapYvert
 	end
 end

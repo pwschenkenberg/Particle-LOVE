@@ -37,8 +37,8 @@ local particleInteractions = {
     [colorTable.red] = { 
 		[colorTable.red] 	= {-1,1}, --self
 		[colorTable.green] 	= {3,3}, 
-		[colorTable.blue] 	= {1,2}, 
-		[colorTable.yellow]	= {1,3} },
+		[colorTable.blue] 	= {2,2}, 
+		[colorTable.yellow]	= {2,3} },
 
     [colorTable.green] = { 
     	[colorTable.red] 	= {-1,3}, 
@@ -48,14 +48,14 @@ local particleInteractions = {
 
     [colorTable.blue] = { 
     	[colorTable.red] 	= {-1,2}, 
-    	[colorTable.green] 	= {1,2}, 
+    	[colorTable.green] 	= {2,2}, 
     	[colorTable.blue] 	= {-1,1},--self
     	[colorTable.yellow]	= {-1,3} },
 
     [colorTable.yellow] = { 
     	[colorTable.red] 	= {-1,2}, 
-    	[colorTable.green] 	= {1,2}, 
-    	[colorTable.blue] 	= {1,2},
+    	[colorTable.green] 	= {2,2}, 
+    	[colorTable.blue] 	= {2,2},
     	[colorTable.yellow]	= {-1,1} }--self
 }
 
