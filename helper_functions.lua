@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 400 --range of influence
+		particle.range = 700 --range of influence
 
 		--position
 		particle.x = 0
@@ -28,9 +28,9 @@ function createParticles(qty, radius)
 		particle.vmax = 300
 
 		particle.mass = 2
-		particle.drag = .9
+		particle.drag = .95
 
-		particle.color = randomColor()
+		particle.color = randomColor(4)
 
 		table.insert(list_of_particles, particle)
 	end
@@ -62,13 +62,15 @@ function pDistance(p1,p2)
 end
 
 -- takes a distance and converts it into a force multiplier from 0 to 1
-function forceMultipler(distance,range)
+--function forceMultipler(distance,range)
 	-- linear from 1 to 0, scaled by range
 	-- TODO: add a smoothing function over the range
-	local x = distance/range
+	--local x = distance/range
 
-	return -math.sin(5*x-1.6)
-end
+	--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
+	--return -x^2 * math.sin(math.pi * (x))
+	--return math.sin((1.6 * (x^1.5 - 1))^3)
+--end
 
 function updateAcceleration(p)
 	p.ax = 0
@@ -78,18 +80,17 @@ function updateAcceleration(p)
 		if v == p then else
 			local distance = pDistance(p,v)
 			if distance < p.range then
-				local dir = getParticleInteraction(p.color, v.color)
+				local pInt,eq = getParticleInteraction(p.color, v.color,distance,p.range)
 				local angle = math.atan2(v.y - p.y, v.x - p.x)
-				local force = forceMultipler(distance,p.range)
 
-				p.ax = p.ax + math.cos(angle) * dir * force / p.mass
-				p.ay = p.ay + math.sin(angle) * dir * force / p.mass
+				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
+				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
 			end
 		end
 	end
 
 	--gravity
-	p.ay = p.ay + 10
+	--p.ay = p.ay + 8
 
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
@@ -118,15 +119,16 @@ function updateVelocity(p,dt)
 	p.vx = (p.vx + p.ax) * p.drag
 	p.vy = (p.vy + p.ay) * p.drag
 
-	if p.y >= (winHeight - p.r) then
-		p.vy = -p.vy
-	end
+	--if p.y >= (winHeight - p.r) then
+	--	p.vy = -p.vy
+	--end
 	
 end
 
 function updatePosition(p,dt)
 	local winWidth, winHeight = love.window.getMode()
 	p.x = (p.x + p.vx * dt) % winWidth
-	p.y = math.min(p.y + p.vy * dt,winHeight-p.r) --% winHeight
+	--p.y = math.min(p.y + p.vy * dt,winHeight-p.r)
+	p.y = (p.y + p.vy * dt) % winHeight
 end
 

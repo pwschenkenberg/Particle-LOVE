@@ -27,38 +27,55 @@ function getRGB(color)
 end
 
 -- returns random {r,g,b} value from colorTable
-function randomColor()
-	local color = colorKeys[math.random(#colorKeys)]
+function randomColor(num)
+	local color = colorKeys[math.random(math.min(#colorKeys,num))]
 	return getRGB(color)
 end
 
 local particleInteractions = {
 	-- positive = attraction
     [colorTable.red] = { 
-   		[colorTable.red] 	= -1, --self
-		[colorTable.green] 	= 1, 
-		[colorTable.blue] 	= -3, 
-		[colorTable.yellow]	= 4 },
+		[colorTable.red] 	= {-1,1}, --self
+		[colorTable.green] 	= {1,2}, 
+		[colorTable.blue] 	= {1,2}, 
+		[colorTable.yellow]	= {1,2} },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= 4, 
-    	[colorTable.green] 	= -1, --self
-    	[colorTable.blue] 	= 1, 
-    	[colorTable.yellow]	= -10 },
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {-1,1}, --self
+    	[colorTable.blue] 	= {-1,2}, 
+    	[colorTable.yellow]	= {-1,2} },
 
     [colorTable.blue] = { 
-    	[colorTable.red] 	= 4, 
-    	[colorTable.green] 	= 1, 
-    	[colorTable.blue] 	= -1,--self
-    	[colorTable.yellow]	= -1 },
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {1,2}, 
+    	[colorTable.blue] 	= {-1,1},--self
+    	[colorTable.yellow]	= {-1,2} },
 
     [colorTable.yellow] = { 
-    	[colorTable.red] 	= -1, 
-    	[colorTable.green] 	= 5, 
-    	[colorTable.blue] 	= -1,
-    	[colorTable.yellow]	= -.5 }--self
+    	[colorTable.red] 	= {-1,2}, 
+    	[colorTable.green] 	= {1,2}, 
+    	[colorTable.blue] 	= {1,2},
+    	[colorTable.yellow]	= {-1,1} }--self
 }
 
-function getParticleInteraction(p,pTarget)
-	return particleInteractions[p][pTarget]
+function forceEquation(i,distance,range)
+	local x = distance/range
+	if i == 1 then
+		-- eq 1
+		return math.sin((1.6 * (x^1 - 1))^3) * 2
+	elseif i == 2 then
+		-- eq 2
+		--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
+		return 1-x
+	else
+		return 0
+	end
+
+end
+
+function getParticleInteraction(p,pTarget,distance,range)
+	local pInt = particleInteractions[p][pTarget][1]
+	local eq = particleInteractions[p][pTarget][2]
+	return pInt,forceEquation(eq,distance,range)
 end
