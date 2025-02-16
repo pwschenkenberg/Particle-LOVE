@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 700 --range of influence
+		particle.range = 300 --range of influence
 
 		--position
 		particle.x = 0
@@ -28,11 +28,9 @@ function createParticles(qty, radius)
 		particle.vmax = 300
 
 		particle.mass = 2
-<<<<<<< Updated upstream
 		particle.drag = .95
 
 		particle.color = randomColor(4)
-=======
 		particle.drag = .955
 
 		if particle.color == getRGB("red") then
@@ -46,14 +44,13 @@ function createParticles(qty, radius)
 		end
 
 		-- for wraparound logic
-		particle.wrapRange = 100
+		particle.wrapRange = particle.range
 		particle.wrapXvert = 0
 		particle.wrapYvert = 0
 		particle.wrapXhor = 0
 		particle.wrapYhor = 0
 		particle.wrapXcorn = 0
 		particle.wrapYcorn = 0
->>>>>>> Stashed changes
 
 		table.insert(list_of_particles, particle)
 	end
@@ -123,10 +120,10 @@ function updateAcceleration(p)
 	for i,v in ipairs(pList) do
 		if v == p then else
 			local distance = pDistance(p,v)
-			local wrapDistance, dir = 69420, 0
+			local wDistance, dir = 69420, 1
 
 			if p.x < p.wrapRange or p.x > (winWidth - p.wrapRange) or p.y < p.wrapRange or p.y > (winHeight - p.wrapRange) then
-				wrapDistance,dir = wrapDistance(p,v)
+				wDistance,dir = wrapDistance(p,v)
 			end
 
 			if distance < p.range then
@@ -135,9 +132,9 @@ function updateAcceleration(p)
 
 				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
 				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
-			elseif wrapDistance < p.wrapRange then
+			elseif wDistance < p.wrapRange then
 				local x, y = wrapCoords(v,dir)
-				local pInt,eq = getParticleInteraction(p.color, v.color,wrapDistance,p.range)
+				local pInt,eq = getParticleInteraction(p.color, v.color,wDistance,p.range)
 				local angle = math.atan2(y - p.y, x - p.x)
 
 				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
@@ -185,5 +182,22 @@ function updatePosition(p,dt)
 	p.x = (p.x + p.vx * dt) % winWidth
 	--p.y = math.min(p.y + p.vy * dt,winHeight-p.r)
 	p.y = (p.y + p.vy * dt) % winHeight
+
+	p.wrapXvert = p.x
+	p.wrapYvert = p.y + winHeight
+	p.wrapXhor = p.x + winWidth
+	p.wrapYhor = p.y
+	p.wrapXcorn = p.wrapXhor
+	p.wrapYcorn = p.wrapYvert
+
+	if p.x > winWidth/2 then
+		p.wrapXhor = p.x - winWidth
+		p.wrapXcorn = p.wrapXhor
+	end
+
+	if p.y > winHeight/2 then
+		p.wrapYvert = p.y - winWidth
+		p.wrapYcorn = p.wrapYhor
+	end
 end
 
