@@ -12,7 +12,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 700 --range of influence
+		particle.range = 300 --range of influence
 
 		--position
 		particle.x = 0

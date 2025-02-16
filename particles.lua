@@ -41,16 +41,16 @@ local particleInteractions = {
 		[colorTable.yellow]	= {1,2} },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= {-1,2}, 
-    	[colorTable.green] 	= {-1,1}, --self
-    	[colorTable.blue] 	= {-1,2}, 
-    	[colorTable.yellow]	= {-1,2} },
+    	[colorTable.red] 	= {-1,3}, 
+    	[colorTable.green] 	= {-1,3}, --self
+    	[colorTable.blue] 	= {-1,3}, 
+    	[colorTable.yellow]	= {-1,3} },
 
     [colorTable.blue] = { 
     	[colorTable.red] 	= {-1,2}, 
     	[colorTable.green] 	= {1,2}, 
     	[colorTable.blue] 	= {-1,1},--self
-    	[colorTable.yellow]	= {-1,2} },
+    	[colorTable.yellow]	= {-1,3} },
 
     [colorTable.yellow] = { 
     	[colorTable.red] 	= {-1,2}, 
@@ -68,6 +68,8 @@ function forceEquation(i,distance,range)
 		-- eq 2
 		--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
 		return 1-x
+	elseif i == 3 then
+		return math.sin(2 * math.pi * (x + 0.25))
 	else
 		return 0
 	end

@@ -2,7 +2,7 @@ require("helper_functions")
 
 function love.load()
     -- pList is a global list holding all the particles
-    pList = createParticles(600,4)
+    pList = createParticles(600,1)
     placeParticles()
 end
 
