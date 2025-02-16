@@ -28,9 +28,32 @@ function createParticles(qty, radius)
 		particle.vmax = 300
 
 		particle.mass = 2
+<<<<<<< Updated upstream
 		particle.drag = .95
 
 		particle.color = randomColor(4)
+=======
+		particle.drag = .955
+
+		if particle.color == getRGB("red") then
+			particle.mass = 10
+			particle.range = 600
+			particle.drag = .98
+		elseif particle.color == getRGB("green") then
+			particle.mass = 1
+			particle.drag = .9
+			particle.range = 400
+		end
+
+		-- for wraparound logic
+		particle.wrapRange = 100
+		particle.wrapXvert = 0
+		particle.wrapYvert = 0
+		particle.wrapXhor = 0
+		particle.wrapYhor = 0
+		particle.wrapXcorn = 0
+		particle.wrapYcorn = 0
+>>>>>>> Stashed changes
 
 		table.insert(list_of_particles, particle)
 	end
@@ -61,27 +84,61 @@ function pDistance(p1,p2)
 	return distance
 end
 
--- takes a distance and converts it into a force multiplier from 0 to 1
---function forceMultipler(distance,range)
-	-- linear from 1 to 0, scaled by range
-	-- TODO: add a smoothing function over the range
-	--local x = distance/range
+function wrapDistance(p1,p2)
+	local distance = math.sqrt((p2.wrapXvert-p1.x)^2 + (p2.wrapYvert-p1.y)^2)
+	local dir = 1
+	
+	distanceH = math.min(distance,math.sqrt((p2.wrapXhor-p1.x)^2 + (p2.wrapYhor-p1.y)^2))
+	distanceC = math.sqrt((p2.wrapXcorn-p1.x)^2 + (p2.wrapYcorn-p1.y)^2)
+	
+	if distanceH < distance then
+		distance = distanceH
+		dir = 2
+	end
 
-	--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
-	--return -x^2 * math.sin(math.pi * (x))
-	--return math.sin((1.6 * (x^1.5 - 1))^3)
---end
+	if distanceC < distance then
+		distance = distanceC
+		dir = 3
+	end
+
+	return distance, dir
+end
+
+function wrapCoords(p,dir)
+	if dir == 1 then
+		return p.wrapXvert, p.wrapYvert
+	elseif dir == 2 then
+		return p.wrapXhor, p.wrapYhor
+	elseif dir == 3 then
+		return p.wrapXcorn, p.wrapYcorn
+	end
+end
 
 function updateAcceleration(p)
 	p.ax = 0
 	p.ay = 0
 
+	local winWidth, winHeight = love.window.getMode()
+
 	for i,v in ipairs(pList) do
 		if v == p then else
 			local distance = pDistance(p,v)
+			local wrapDistance, dir = 69420, 0
+
+			if p.x < p.wrapRange or p.x > (winWidth - p.wrapRange) or p.y < p.wrapRange or p.y > (winHeight - p.wrapRange) then
+				wrapDistance,dir = wrapDistance(p,v)
+			end
+
 			if distance < p.range then
 				local pInt,eq = getParticleInteraction(p.color, v.color,distance,p.range)
 				local angle = math.atan2(v.y - p.y, v.x - p.x)
+
+				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
+				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
+			elseif wrapDistance < p.wrapRange then
+				local x, y = wrapCoords(v,dir)
+				local pInt,eq = getParticleInteraction(p.color, v.color,wrapDistance,p.range)
+				local angle = math.atan2(y - p.y, x - p.x)
 
 				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
 				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
@@ -108,8 +165,7 @@ function updateAcceleration(p)
 			p.ax = p.ax + math.cos(mouseAngle) * 75
 			p.ay = p.ay + math.sin(mouseAngle) * 75
 		end
-	end
-	
+	end	
 end
 
 function updateVelocity(p,dt)
@@ -121,8 +177,7 @@ function updateVelocity(p,dt)
 
 	--if p.y >= (winHeight - p.r) then
 	--	p.vy = -p.vy
-	--end
-	
+	--end	
 end
 
 function updatePosition(p,dt)
