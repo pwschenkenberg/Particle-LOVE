@@ -1,6 +1,6 @@
 --window tiling logic
 
-winWidth, winHeight = 500, 500
+winWidth, winHeight = 500,400
 local totalWidth, totalHeight = love.window.getMode()
 
 transform = love.math.newTransform()

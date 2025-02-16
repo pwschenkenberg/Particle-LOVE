@@ -13,7 +13,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 240 --range of influence
+		particle.range = 150 --range of influence
 
 		--position
 		particle.x = 0
@@ -30,8 +30,8 @@ function createParticles(qty, radius)
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 3
-		particle.drag = .92
+		particle.mass = 2
+		particle.drag = .9
 
 		if particle.color == getRGB("red") then
 			--particle.mass = 10
@@ -148,7 +148,7 @@ function updateAcceleration(p)
 		local mousex, mousey = love.mouse.getPosition()
 		mousex = mousex - transX
 		mousey = mousey - transY
-		
+
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
 			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
 			p.ax = p.ax - math.cos(mouseAngle) * 75
@@ -158,6 +158,9 @@ function updateAcceleration(p)
 
 	if love.mouse.isDown(2) then
 		local mousex, mousey = love.mouse.getPosition()
+		mousex = mousex - transX
+		mousey = mousey - transY
+
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
 			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
 			p.ax = p.ax + math.cos(mouseAngle) * 75

@@ -4,7 +4,7 @@ require("tiling")
 function love.load()
     
     -- pList is a global list holding all the particles
-    pList = createParticles(400,1)
+    pList = createParticles(400,.2)
     placeParticles()
 end
 
@@ -37,6 +37,5 @@ function love.draw()
     love.graphics.origin()
     love.graphics.setColor(.5,.5,.5)
     love.graphics.print(FPS, 10, 10) 
-
 
 end
