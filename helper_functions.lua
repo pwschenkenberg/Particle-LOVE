@@ -13,7 +13,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 150 --range of influence
+		particle.range = 150 --range of vision
 
 		--position
 		particle.x = 0
@@ -24,8 +24,8 @@ function createParticles(qty, radius)
 		particle.ay = 0
 
 		--velocity
-		particle.vx = math.random(-10,10)
-		particle.vy = math.random(-10,10)
+		particle.vx = 0
+		particle.vy = 0
 		particle.vmax = 200
 		
 		particle.color = randomColor(4)
