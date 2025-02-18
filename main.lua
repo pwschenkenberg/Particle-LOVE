@@ -4,9 +4,13 @@ require("tiling")
 function love.load()
     
     -- pList is a global list holding all the particles
-    pList = createParticles(400,.2)
+    pList = createParticles(400,.4)
     placeParticles()
+
+    blurShader:send("image_size",{totalWidth,totalHeight})
+    blurShader:send("horizontal", true)
 end
+
 
 function love.update(dt)
     --iterate over particles , get new accel values
@@ -20,19 +24,26 @@ function love.update(dt)
     end
 
     FPS = math.floor(1/dt)
+
+    
 end
 
+
 function love.draw()
+
+    --love.graphics.setShader(blurShader)
+    love.graphics.captureScreenshot( runShader )
+    --love.graphics.setShader()
+
     love.graphics.applyTransform(transform)
     love.graphics.rectangle("line",0,0,winWidth,winHeight)
 
     for i, v in ipairs(pList) do
-        v.seen = {}
+        --v.seen = {}
         --love.graphics.setColor(v.color)
         --love.graphics.circle("line",v.x,v.y,v.r)
         drawTiles(v)
     end
-
 
     love.graphics.origin()
     love.graphics.setColor(.5,.5,.5)
