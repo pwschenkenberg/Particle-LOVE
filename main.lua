@@ -26,8 +26,8 @@ function love.draw()
     love.graphics.applyTransform(transform)
     love.graphics.rectangle("line",0,0,winWidth,winHeight)
 
-
     for i, v in ipairs(pList) do
+        v.seen = {}
         --love.graphics.setColor(v.color)
         --love.graphics.circle("line",v.x,v.y,v.r)
         drawTiles(v)
@@ -38,4 +38,8 @@ function love.draw()
     love.graphics.setColor(.5,.5,.5)
     love.graphics.print(FPS, 10, 10) 
 
+end
+
+function love.keypressed(k)
+    if k == "r" then love.event.quit "restart" end
 end
