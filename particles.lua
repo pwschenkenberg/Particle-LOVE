@@ -1,9 +1,9 @@
 -- store color RGB values
 local colorTable = {
-	red 	= {.8,0,0},
-	green 	= {0,.8,0},
+	red 	= {1,0,0},
+	green 	= {0,1,0},
 	blue 	= {.2,.4,1},
-	yellow 	= {.8,.8,0},
+	yellow 	= {1,1,0},
 	--purple 	= {1,0,1},
 	--cyan 	= {0,1,1},
 	--white	= {1,1,1},
@@ -41,7 +41,7 @@ local particleInteractions = {
 		[colorTable.yellow]	= {2,3} },
 
     [colorTable.green] = { 
-    	[colorTable.red] 	= {-1,3}, 
+    	[colorTable.red] 	= {-5,3}, 
     	[colorTable.green] 	= {-1,3}, --self
     	[colorTable.blue] 	= {-1,3}, 
     	[colorTable.yellow]	= {-1,3} },

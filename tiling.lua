@@ -1,6 +1,6 @@
 --window tiling logic
 
-winWidth, winHeight = 1000, 700
+winWidth, winHeight = 1100, 700
 totalWidth, totalHeight = love.window.getMode()
 
 transform = love.math.newTransform()
@@ -35,22 +35,24 @@ function drawTiles(p)
 
 end
 
+
+
 blurShader = love.graphics.newShader[[
-	const float weight[10] = float[] (0.1845, 0.1790, 0.1624, 0.1384, 0.1125, 0.0849, 0.0590, 0.0406, 0.0240, 0.0148);
+	const float weight[5] = float[] (0.5, 0.25, 0.12, 0.07, 0.05);
 	extern vec2 image_size;
 	extern bool horizontal;  
 	  
-	vec4 effect(vec4 color, Image image, vec2 texture_coords, vec2 _) {
+	vec4 effect(vec4 color, Image image, vec2 texture_coords, vec2 screen_coords ) {
 	  vec2 tex_offset = 1.0 / image_size;
 	  vec3 result = Texel(image, texture_coords).rgb * weight[0];
 	  
 	  if(horizontal) {
-	    for(int i = 1; i < 10; ++i) {
+	    for(int i = 1; i < 5; ++i) {
 	    result += Texel(image, texture_coords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i] / 2; //Pixels to the right
 	    result += Texel(image, texture_coords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i] / 2; //Pixels to the left
 	    }
 	  }else {
-	    for(int i = 1; i < 10; i++) {
+	    for(int i = 1; i < 5; i++) {
 	    result += Texel(image, texture_coords + vec2(0.0, tex_offset.y * i)).rgb * weight[i] / 2; //Pixels to the down
 	    result += Texel(image, texture_coords - vec2(0.0, tex_offset.y * i)).rgb * weight[i] / 2; //Pixels to the up
 	    }
@@ -60,15 +62,22 @@ blurShader = love.graphics.newShader[[
 	}
 ]]
 
+fadeShader = love.graphics.newShader[[
+    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+      vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+      if((pixel.r + pixel.g + pixel.b)/3 < .1){
+      	pixel.r = 0;
+      	pixel.g = 0;
+      	pixel.b = 0;
+      }
+      return pixel * .1;
+    }
+  ]]
 
 
-function drawbg( image )
-    love.graphics.draw(image)
-end
-
-function runShader(screenshot)
-
-	love.graphics.setShader(blurShader)
-	love.graphics.draw(screenshot)
-	love.graphics.setShader()
-end
+myShader = love.graphics.newShader[[
+    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+      vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+      return pixel * (1-color);
+    }
+  ]]

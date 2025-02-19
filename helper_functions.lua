@@ -62,7 +62,7 @@ end
 -- takes list of particles and draws them in a rectangle based on 
 -- particle radius and window width, does not account for window height
 function placeParticles()
-	local initX = 550
+	local initX = 300
 	local initY = 200
 	
 	for i,v in ipairs(pList) do
