@@ -5,10 +5,11 @@ require("shaders")
 function love.load()
     
     -- pList is a global list holding all the particles
-    pList = createParticles(500,.2)
+    pList = createParticles(500,4)
     placeParticles()
 
-    gaussianBlur:send("image_size",{totalWidth,totalHeight})
+    --gaussianBlur:send("image_size",{totalWidth,totalHeight})
+    crowdsource:send("image_size",{totalWidth,totalHeight})
 
     canvas1 = love.graphics.newCanvas()
     canvas2 = love.graphics.newCanvas()
@@ -30,9 +31,6 @@ function love.update(dt)
 
     FPS = math.floor(1/dt)
 
-    if love.mouse.isDown(3) then
-        dragScreen()
-    end
 end
 
 
@@ -40,33 +38,18 @@ end
 
 function love.draw()
 
-    --apply vertical blur and draw to canvas2
-    love.graphics.setCanvas(canvas2)
-    love.graphics.setShader(gaussianBlur)
-    gaussianBlur:send("horizontal", false)
-    love.graphics.draw(canvas1)
+    --drawGaussianBlur()
 
-    --apply horizontal blur and draw to canvas3
-    love.graphics.setCanvas(canvas3)
-    gaussianBlur:send("horizontal", true)
-    love.graphics.draw(canvas2)
-    love.graphics.setShader()
+    love.graphics.setShader(crowdsource)
 
-    --draw dots to canvas3
     love.graphics.applyTransform(transform)
     for i, v in ipairs(pList) do
         drawTiles(v)
     end
     love.graphics.origin()
 
-    --draw canvas3 to screen
-    love.graphics.setCanvas()
-    love.graphics.draw(canvas3)
+    love.graphics.setShader()
 
-    --draw back to canvas1
-    love.graphics.setCanvas(canvas1)
-    love.graphics.draw(canvas3)
-    love.graphics.setCanvas()
 
 
     --draw rectangle and fps counter

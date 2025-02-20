@@ -202,3 +202,34 @@ function updatePosition(p,dt)
 		p.wrapYcorn = p.wrapYvert
 	end
 end
+
+function drawGaussianBlur()
+	   --apply vertical blur and draw to canvas2
+    love.graphics.setCanvas(canvas2)
+    love.graphics.setShader(gaussianBlur)
+    gaussianBlur:send("horizontal", false)
+    love.graphics.draw(canvas1)
+
+    --apply horizontal blur and draw to canvas3
+    love.graphics.setCanvas(canvas3)
+    gaussianBlur:send("horizontal", true)
+    love.graphics.draw(canvas2)
+    love.graphics.setShader()
+
+    --draw dots to canvas3
+    love.graphics.applyTransform(transform)
+    for i, v in ipairs(pList) do
+        drawTiles(v)
+    end
+    love.graphics.origin()
+
+    --draw canvas3 to screen
+    love.graphics.setCanvas()
+    love.graphics.setShader()
+    love.graphics.draw(canvas3)
+    love.graphics.setShader()
+    --draw back to canvas1
+    love.graphics.setCanvas(canvas1)
+    love.graphics.draw(canvas3)
+    love.graphics.setCanvas()
+end
