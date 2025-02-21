@@ -2,7 +2,7 @@
 local colorTable = {
 	red 	= {1,0,0},
 	green 	= {0,1,0},
-	blue 	= {.2,.4,1},
+	blue 	= {0,0,1},
 	yellow 	= {1,1,0},
 	--purple 	= {1,0,1},
 	--cyan 	= {0,1,1},
@@ -60,18 +60,22 @@ local particleInteractions = {
 }
 
 function forceEquation(i,distance,range)
-	local x = distance/range
-	if i == 1 then
-		-- eq 1
-		return math.sin((1.6 * (x^1 - 1))^3) * 2
-	elseif i == 2 then
-		-- eq 2
-		--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
-		return 1-x
-	elseif i == 3 then
-		return math.sin(2 * math.pi * (x + 0.25))
+	if distance > 5 then
+		local x = distance/range
+		if i == 1 then
+			-- eq 1
+			return math.sin((1.6 * (x^1 - 1))^3) * 2
+		elseif i == 2 then
+			-- eq 2
+			--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
+			return 1-2*x
+		elseif i == 3 then
+			return math.sin(2 * math.pi * (x + 0.25))
+		else
+			return 0
+		end
 	else
-		return 0
+		return 5
 	end
 
 end

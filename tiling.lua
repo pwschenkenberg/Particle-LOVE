@@ -23,7 +23,8 @@ function drawTiles(p)
 			if i+1 == math.ceil(xTiles/2) and j+1 == math.ceil(yTiles/2) then
 				love.graphics.setColor(p.color)
 			else
-				love.graphics.setColor(.5,.5,.5)
+				--love.graphics.setColor(.5,.5,.5)
+				love.graphics.setColor(p.color)
 			end
 
 			local yOff = tileOriginY + j * winHeight
