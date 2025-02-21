@@ -5,12 +5,16 @@ require("shaders")
 function love.load()
     
     -- pList is a global list holding all the particles
-    pList = createParticles(500,3)
+    pList = createParticles(500,10)
     placeParticles()
 
     gaussianBlur:send("image_size",{totalWidth,totalHeight})
-    crowdsource:send("image_size",{totalWidth,totalHeight})
+
     smallBlur:send("image_size",{totalWidth,totalHeight})
+    smallBlur:send("color_window",{winWidth,winHeight})
+    smallBlur:send("draw_offset",{transX,transY})    
+
+    crowdsource:send("image_size",{totalWidth,totalHeight})
     crowdsource:send("color_window",{winWidth,winHeight})
     crowdsource:send("draw_offset",{transX,transY})
 

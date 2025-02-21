@@ -13,7 +13,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 150 --range of vision
+		particle.range = 300 --range of vision
 
 		--position
 		particle.x = 0
