@@ -44,13 +44,21 @@ colorMask = love.graphics.newShader[[
 smallBlur = love.graphics.newShader[[
 	const float weight[4] = float[] (.5,.3,.15,.05);
 	extern vec2 image_size;
+	extern vec2 color_window;
+	extern vec2 draw_offset;
 	extern bool horizontal;  
 	  
 	vec4 effect(vec4 color, Image image, vec2 texture_coords, vec2 screen_coords ) {
 	  vec2 tex_offset = 1.0 / image_size;
 	  vec3 result = Texel(image, texture_coords).rgb * weight[0];
 
+	  if(screen_coords.x < draw_offset.x || screen_coords.x > draw_offset.x + color_window.x){
+		return Texel(image, texture_coords ) * color;
+		}
 
+		if(screen_coords.y < draw_offset.y || screen_coords.y > draw_offset.y + color_window.y){
+		return Texel(image, texture_coords ) * color;
+		}
 	  
 	  if(horizontal) {
 	    for(int i = 1; i < 4; ++i) {
