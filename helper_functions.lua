@@ -1,4 +1,5 @@
 require("particles")
+require("tiling")
 
 math.randomseed(os.time())
 
@@ -12,7 +13,7 @@ function createParticles(qty, radius)
 		local particle = {}
 
 		particle.r = radius
-		particle.range = 240 --range of influence
+		particle.range = 300 --range of vision
 
 		--position
 		particle.x = 0
@@ -23,14 +24,14 @@ function createParticles(qty, radius)
 		particle.ay = 0
 
 		--velocity
-		particle.vx = math.random(-10,10)
-		particle.vy = math.random(-10,10)
+		particle.vx = 0
+		particle.vy = 0
 		particle.vmax = 200
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 3
-		particle.drag = .92
+		particle.mass = 4
+		particle.drag = .9
 
 		if particle.color == getRGB("red") then
 			--particle.mass = 10
@@ -61,7 +62,7 @@ end
 -- takes list of particles and draws them in a rectangle based on 
 -- particle radius and window width, does not account for window height
 function placeParticles()
-	local initX = 550
+	local initX = 300
 	local initY = 200
 	
 	for i,v in ipairs(pList) do
@@ -124,18 +125,18 @@ function updateAcceleration(p)
 			end
 
 			if distance < p.range then
-				local pInt,eq = getParticleInteraction(p.color, v.color,distance,p.range)
+				local interaction = getParticleInteraction(p.color, v.color,distance,p.range)
 				local angle = math.atan2(v.y - p.y, v.x - p.x)
 
-				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
-				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
+				p.ax = p.ax + math.cos(angle) * interaction / p.mass
+				p.ay = p.ay + math.sin(angle) * interaction / p.mass
 			elseif wDistance < p.wrapRange then
 				local x, y = wrapCoords(v,dir)
-				local pInt,eq = getParticleInteraction(p.color, v.color,wDistance,p.range)
+				local interaction,eq = getParticleInteraction(p.color, v.color,wDistance,p.range)
 				local angle = math.atan2(y - p.y, x - p.x)
 
-				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
-				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
+				p.ax = p.ax + math.cos(angle) * interaction / p.mass
+				p.ay = p.ay + math.sin(angle) * interaction / p.mass
 			end
 		end
 	end
@@ -145,6 +146,9 @@ function updateAcceleration(p)
 
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
+		mousex = mousex - transX
+		mousey = mousey - transY
+
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
 			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
 			p.ax = p.ax - math.cos(mouseAngle) * 75
@@ -154,6 +158,9 @@ function updateAcceleration(p)
 
 	if love.mouse.isDown(2) then
 		local mousex, mousey = love.mouse.getPosition()
+		mousex = mousex - transX
+		mousey = mousey - transY
+
 		if math.sqrt((mousex-p.x)^2 + (mousey-p.y)^2) < p.range then
 			local mouseAngle = math.atan2(mousey - p.y, mousex - p.x)
 			p.ax = p.ax + math.cos(mouseAngle) * 75
@@ -194,4 +201,35 @@ function updatePosition(p,dt)
 		p.wrapYvert = p.y - winHeight
 		p.wrapYcorn = p.wrapYvert
 	end
+end
+
+function drawGaussianBlur()
+	   --apply vertical blur and draw to canvas2
+    love.graphics.setCanvas(canvas2)
+    love.graphics.setShader(gaussianBlur)
+    gaussianBlur:send("horizontal", false)
+    love.graphics.draw(canvas1)
+
+    --apply horizontal blur and draw to canvas3
+    love.graphics.setCanvas(canvas3)
+    gaussianBlur:send("horizontal", true)
+    love.graphics.draw(canvas2)
+    love.graphics.setShader()
+
+    --draw dots to canvas3
+    love.graphics.applyTransform(transform)
+    for i, v in ipairs(pList) do
+        drawTiles(v)
+    end
+    love.graphics.origin()
+
+    --draw canvas3 to screen
+    love.graphics.setCanvas()
+    love.graphics.setShader()
+    love.graphics.draw(canvas3)
+    love.graphics.setShader()
+    --draw back to canvas1
+    love.graphics.setCanvas(canvas1)
+    love.graphics.draw(canvas3)
+    love.graphics.setCanvas()
 end
