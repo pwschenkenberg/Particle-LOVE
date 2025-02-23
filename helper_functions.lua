@@ -30,7 +30,7 @@ function createParticles(qty, radius)
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 2
+		particle.mass = 4
 		particle.drag = .9
 
 		if particle.color == getRGB("red") then
@@ -125,18 +125,18 @@ function updateAcceleration(p)
 			end
 
 			if distance < p.range then
-				local pInt,eq = getParticleInteraction(p.color, v.color,distance,p.range)
+				local interaction = getParticleInteraction(p.color, v.color,distance,p.range)
 				local angle = math.atan2(v.y - p.y, v.x - p.x)
 
-				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
-				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
+				p.ax = p.ax + math.cos(angle) * interaction / p.mass
+				p.ay = p.ay + math.sin(angle) * interaction / p.mass
 			elseif wDistance < p.wrapRange then
 				local x, y = wrapCoords(v,dir)
-				local pInt,eq = getParticleInteraction(p.color, v.color,wDistance,p.range)
+				local interaction,eq = getParticleInteraction(p.color, v.color,wDistance,p.range)
 				local angle = math.atan2(y - p.y, x - p.x)
 
-				p.ax = p.ax + math.cos(angle) * pInt * eq / p.mass
-				p.ay = p.ay + math.sin(angle) * pInt * eq / p.mass
+				p.ax = p.ax + math.cos(angle) * interaction / p.mass
+				p.ay = p.ay + math.sin(angle) * interaction / p.mass
 			end
 		end
 	end

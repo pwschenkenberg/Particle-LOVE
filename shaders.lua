@@ -29,17 +29,7 @@ gaussianBlur = love.graphics.newShader[[
 	}
 ]]
 
-colorMask = love.graphics.newShader[[
-    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
-      vec4 pixel = Texel(texture, texture_coords );
 
-      if(color.rgb == vec3(0,0,0)){
-      	color.a = 0;
-      }
-
-      return pixel * color;
-    }
-  ]]
 
 smallBlur = love.graphics.newShader[[
 	const float weight[4] = float[] (.5,.3,.15,.05);
@@ -107,7 +97,7 @@ crowdsource = love.graphics.newShader[[
 	  	totalRGB += Texel(image, texture_coords + vec2(tex_offset.x * radius * cos(step * i), tex_offset.y * radius * sin(step * i))).rgb;
 	  }
 
-	  float maxColor = max(max(totalRGB.r, totalRGB.g), totalRGB.b);
+	  //float maxColor = max(max(totalRGB.r, totalRGB.g), totalRGB.b);
 
 	  //if(maxColor == 0){return result;}
 

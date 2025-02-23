@@ -3,9 +3,12 @@ require("tiling")
 require("shaders")
 
 function love.load()
+
+    love.window.setFullscreen(true, "desktop")
     
     -- pList is a global list holding all the particles
-    pList = createParticles(500,10)
+    pRadius = 10
+    pList = createParticles(500,pRadius)
     placeParticles()
 
     gaussianBlur:send("image_size",{totalWidth,totalHeight})
@@ -55,7 +58,6 @@ function love.draw()
     love.graphics.origin()
 
 
-
     love.graphics.setShader(gaussianBlur)
     gaussianBlur:send("horizontal", false)
 
@@ -83,14 +85,24 @@ function love.draw()
 
     love.graphics.setShader()
 
-    --draw rectangle and fps counter
-    love.graphics.setColor(.5,.5,.5)
+
+    --draw rectangle and misc text
+    love.graphics.setColor(.4,.4,.4)
     love.graphics.rectangle("line",transX,transY,winWidth,winHeight)
 
-    love.graphics.print(FPS, 10, 10) 
+    love.graphics.print(FPS.." fps", 10, 10) 
+    love.graphics.print("r to reset", 10, 20)
+    love.graphics.print("esc to quit", 10, 30)
 
 end
 
 function love.keypressed( k )
-    if k == "r" then love.event.quit "restart" end
+
+    if k == "r" then love.event.quit "restart"
+    elseif k == "escape" then love.event.quit() end
+
+    if key == "f" then
+        fullscreen = not fullscreen
+        love.window.setFullscreen(fullscreen, "exclusive")
+    end
 end
