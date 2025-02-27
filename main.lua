@@ -4,7 +4,8 @@ require("shaders")
 
 function love.load()
 
-    love.window.setFullscreen(true, "desktop")
+    fullscreen = false
+    love.window.setFullscreen(fullscreen, "desktop")
     
     -- pList is a global list holding all the particles
     pRadius = 10

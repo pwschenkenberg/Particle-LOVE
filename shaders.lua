@@ -32,7 +32,7 @@ gaussianBlur = love.graphics.newShader[[
 
 
 smallBlur = love.graphics.newShader[[
-	const float weight[4] = float[] (.5,.3,.15,.05);
+	const float weight[5] = float[] (.4,.25,.2,.1,.1);  //0.1845, 0.1790, 0.1624, 0.1384, 0.1125, 0.0849, 0.0590, 0.0406, 0.0240, 0.0148);
 	extern vec2 image_size;
 	extern vec2 color_window;
 	extern vec2 draw_offset;
@@ -51,12 +51,12 @@ smallBlur = love.graphics.newShader[[
 		}
 	  
 	  if(horizontal) {
-	    for(int i = 1; i < 4; ++i) {
+	    for(int i = 1; i < 5; ++i) {
 	    result += Texel(image, texture_coords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i] / 2; //Pixels to the right
 	    result += Texel(image, texture_coords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i] / 2; //Pixels to the left
 	    }
 	  }else {
-	    for(int i = 1; i < 4; i++) {
+	    for(int i = 1; i < 5; i++) {
 	    result += Texel(image, texture_coords + vec2(0.0, tex_offset.y * i)).rgb * weight[i] / 2; //Pixels to the down
 	    result += Texel(image, texture_coords - vec2(0.0, tex_offset.y * i)).rgb * weight[i] / 2; //Pixels to the up
 	    }
@@ -69,9 +69,9 @@ smallBlur = love.graphics.newShader[[
 
 
 crowdsource = love.graphics.newShader[[
-	const float radius = 1;
+	const float radius = 6;
 	const int samples = 20;
-	const float step = .05;
+	const float step = 6.28/samples;
 	vec4 result = vec4(0,0,0,1);
 	const float cutoff = 2;
 
@@ -97,15 +97,10 @@ crowdsource = love.graphics.newShader[[
 	  	totalRGB += Texel(image, texture_coords + vec2(tex_offset.x * radius * cos(step * i), tex_offset.y * radius * sin(step * i))).rgb;
 	  }
 
-	  //float maxColor = max(max(totalRGB.r, totalRGB.g), totalRGB.b);
-
-	  //if(maxColor == 0){return result;}
 
 	  if(totalRGB.r > cutoff){ result.r = 1;}
 	  if(totalRGB.g > cutoff){ result.g = 1;}
 	  if(totalRGB.b > cutoff){ result.b = 1;}
-
-	  //result.rgb = totalRGB/maxColor;
 
 	  return result;
 	}

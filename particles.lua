@@ -38,19 +38,19 @@ local particleInteractions = {
 		[colorTable.red] 	= {0,1}, --self
 		[colorTable.green] 	= {0,3}, 
 		[colorTable.blue] 	= {0,2}, 
-		[colorTable.yellow]	= {0,3} },
+		[colorTable.yellow]	= {0,2} },
 
     [colorTable.green] = { 
     	[colorTable.red] 	= {0,2}, 
 		[colorTable.green] 	= {0,1}, --self
 		[colorTable.blue] 	= {0,2}, 
-		[colorTable.yellow]	= {0,3} },
+		[colorTable.yellow]	= {0,2} },
 
     [colorTable.blue] = { 
     	[colorTable.red] 	= {0,1}, 
-		[colorTable.green] 	= {0,3}, 
-		[colorTable.blue] 	= {0,1}, --self
-		[colorTable.yellow]	= {0,3} },
+		[colorTable.green] 	= {0,1}, 
+		[colorTable.blue] 	= {0,2}, --self
+		[colorTable.yellow]	= {0,1} },
 
     [colorTable.yellow] = { 
     	[colorTable.red] 	= {0,1}, 
@@ -60,17 +60,18 @@ local particleInteractions = {
 }
 
 function forceEquation(i,distance,range)
+	--[[
 	if distance > pRadius*2 then
 		local x = distance/range
 
 		if i == 1 then
 			-- eq 1
-			return x
+			return 5 * x^(1/2)
 
 		elseif i == 2 then
 			-- eq 2
 			--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
-			return -1/x
+			return -.8/x
 
 		elseif i == 3 then
 			--return math.sin(2 * math.pi * (x + 0.25))
@@ -83,6 +84,29 @@ function forceEquation(i,distance,range)
 	else
 		return -20
 	end
+	]]
+
+	if distance < pRadius * 2 then return -20 
+	elseif distance < pRadius * 15 then
+		local x = distance/range
+
+		if i == 1 then
+			-- eq 1
+			return 5 * x^(1/2)
+
+		elseif i == 2 then
+			-- eq 2
+			--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
+			return -.8/x
+
+		elseif i == 3 then
+			--return math.sin(2 * math.pi * (x + 0.25))
+			return 1/x
+
+		else
+			return 0
+		end
+	else return 1 end
 
 end
 

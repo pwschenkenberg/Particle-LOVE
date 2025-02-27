@@ -26,11 +26,11 @@ function createParticles(qty, radius)
 		--velocity
 		particle.vx = 0
 		particle.vy = 0
-		particle.vmax = 200
+		--particle.vmax = 200
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 4
+		particle.mass = 15
 		particle.drag = .9
 
 		if particle.color == getRGB("red") then
@@ -47,6 +47,7 @@ function createParticles(qty, radius)
 		particle.wrapRange = particle.range
 		particle.wrapXvert = 0
 		particle.wrapYvert = 0
+		
 		particle.wrapXhor = 0
 		particle.wrapYhor = 0
 		particle.wrapXcorn = 0
