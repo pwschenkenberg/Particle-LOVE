@@ -36,31 +36,32 @@ local particleInteractions = {
 	-- positive = attraction
     [colorTable.red] = { 
 		[colorTable.red] 	= {0,1}, --self
-		[colorTable.green] 	= {0,3}, 
-		[colorTable.blue] 	= {0,2}, 
+		[colorTable.green] 	= {0,2}, 
+		[colorTable.blue] 	= {0,3}, 
 		[colorTable.yellow]	= {0,2} },
 
     [colorTable.green] = { 
     	[colorTable.red] 	= {0,2}, 
-		[colorTable.green] 	= {0,1}, --self
+		[colorTable.green] 	= {0,2}, --self
 		[colorTable.blue] 	= {0,2}, 
-		[colorTable.yellow]	= {0,2} },
+		[colorTable.yellow]	= {0,3} },
 
     [colorTable.blue] = { 
-    	[colorTable.red] 	= {0,1}, 
-		[colorTable.green] 	= {0,1}, 
-		[colorTable.blue] 	= {0,2}, --self
-		[colorTable.yellow]	= {0,1} },
+    	[colorTable.red] 	= {0,2}, 
+		[colorTable.green] 	= {0,3}, 
+		[colorTable.blue] 	= {0,3}, --self
+		[colorTable.yellow]	= {0,2} },
 
     [colorTable.yellow] = { 
-    	[colorTable.red] 	= {0,1}, 
-		[colorTable.green] 	= {0,3}, 
+    	[colorTable.red] 	= {0,3}, 
+		[colorTable.green] 	= {0,2}, 
 		[colorTable.blue] 	= {0,2}, 
 		[colorTable.yellow]	= {0,1} }--self
 }
 
 function forceEquation(i,distance,range)
-	--[[
+
+--[[
 	if distance > pRadius*2 then
 		local x = distance/range
 
@@ -71,7 +72,7 @@ function forceEquation(i,distance,range)
 		elseif i == 2 then
 			-- eq 2
 			--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
-			return -.8/x
+			return -1/x
 
 		elseif i == 3 then
 			--return math.sin(2 * math.pi * (x + 0.25))
@@ -84,9 +85,10 @@ function forceEquation(i,distance,range)
 	else
 		return -20
 	end
-	]]
+]]
 
-	if distance < pRadius * 2 then return -20 
+
+	if distance < pRadius * 2 then return -100 
 	elseif distance < pRadius * 15 then
 		local x = distance/range
 
@@ -97,7 +99,7 @@ function forceEquation(i,distance,range)
 		elseif i == 2 then
 			-- eq 2
 			--return -math.max(((math.atan(2*x - 0.1)/x)-1.08632) / 0.46097,-1)
-			return -.8/x
+			return -1/x
 
 		elseif i == 3 then
 			--return math.sin(2 * math.pi * (x + 0.25))
@@ -107,6 +109,7 @@ function forceEquation(i,distance,range)
 			return 0
 		end
 	else return 1 end
+
 
 end
 

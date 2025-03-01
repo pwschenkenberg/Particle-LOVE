@@ -30,8 +30,8 @@ function createParticles(qty, radius)
 		
 		particle.color = randomColor(4)
 		
-		particle.mass = 15
-		particle.drag = .9
+		particle.mass = 8
+		particle.drag = .95
 
 		if particle.color == getRGB("red") then
 			--particle.mass = 10
@@ -144,6 +144,13 @@ function updateAcceleration(p)
 
 	--gravity
 	--p.ay = p.ay + 8
+
+	--pull towards center
+	local centerX, centerY = winWidth/2, winHeight/2
+	local angle = math.atan2(centerY - p.y, centerX - p.x)
+	p.ax = p.ax + math.cos(angle) * 10
+	p.ay = p.ay + math.sin(angle) * 10
+
 
 	if love.mouse.isDown(1) then
 		local mousex, mousey = love.mouse.getPosition()
